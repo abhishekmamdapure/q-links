@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Q-Links</title>
+
+  <!-- Inter font -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- your styles -->
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="popup-container">
+    <!-- hidden form for add/edit -->
+    <div id="form-container" class="hidden">
+      <input
+        id="display-name"
+        type="text"
+        placeholder="Display Name"
+        class="input-text"
+      />
+      <input
+        id="profile-url"
+        type="url"
+        placeholder="Profile URL"
+        class="input-text"
+      />
+      <select id="icon-select" class="input-text"></select>
+      <div class="form-actions">
+        <button id="save-btn" class="button-primary">✔ Save</button>
+        <button id="cancel-btn" class="button-secondary">✖ Cancel</button>
+      </div>
+    </div>
+
+    <!-- header with title + add button -->
+    <header class="header-bar">
+      <h1 class="heading">Q-Links</h1>
+      <button id="add-btn" class="button-primary">＋</button>
+    </header>
+
+    <!-- where your links render -->
+    <main class="content">
+      <ul id="links-list"></ul>
+    </main>
+  </div>
+
+  <!-- your logic -->
+  <script src="popup.js"></script>
+</body>
+</html>

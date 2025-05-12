@@ -1,0 +1,185 @@
+/* new code added here: Design System – color variables */
+:root {
+  --color-primary:   #2979FF;
+  --color-secondary: #FFCA28;
+  --color-bg:        #FFFFFF;
+  --color-panel:     #F5F7FA;
+  --color-border:    #CBD2DC;
+  --color-text:      #202E3B;
+}
+
+.hidden {
+  display: none !important;   /* new code added here */
+}
+
+/* new code added here: CSS reset & box-sizing */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* new code added here: Base typography & body styling */
+body {
+  font-family: 'Inter', sans-serif;
+  color: var(--color-text);
+  background: var(--color-bg);
+  width: 300px; /* popup width */
+}
+
+/* new code added here: Popup container styling */
+.popup-container {
+  padding: 16px; 
+  border-radius: 12px;
+  background: var(--color-bg);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+/* new code added here: Header bar */
+.header-bar {
+  height: 48px;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--color-panel);
+  border-radius: 12px 12px 0 0;
+  margin-bottom: 16px;
+}
+
+/* new code added here: Heading text */
+.heading {
+  font-weight: 600;
+  font-size: 16px;
+}
+
+/* new code added here: Primary button */
+.button-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 12px;
+  background: var(--color-primary);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 150ms ease, transform 100ms ease;
+}
+.button-primary:hover {
+  /* a 10% darker shade – adjust if you like */
+  background: #256eda;
+}
+.button-primary:active {
+  transform: scale(0.97);
+}
+
+/* new code added here: Link cards */
+.link-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: var(--color-panel);
+  border-radius: 8px;
+  margin-bottom: 8px;
+  transition: box-shadow 150ms ease;
+}
+.link-card:hover {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* new code added here: Text styles for card/body */
+.body-text {
+  font-weight: 400;
+  font-size: 14px;
+}
+.small-text {
+  font-weight: 400;
+  font-size: 12px;
+}
+
+#links-list {
+  list-style: none;           /* new code added here */
+  margin: 0;
+  padding: 0;
+}
+
+#links-list img {
+  width: 24px;                /* new code added here */
+  height: 24px;               /* new code added here */
+  object-fit: contain;
+}
+
+
+/* new code added here: Input fields (if you have any) */
+.input-text {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  background: var(--color-bg);
+  margin-bottom: 12px;
+}
+.input-text:focus {
+  border-color: var(--color-primary);
+  outline: none;
+}
+
+/* ─── Professional Link-Item Layout ─── */
+/* new code added here */
+
+#links-list .link-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--color-panel);
+  padding: 8px 12px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  transition: box-shadow 150ms ease;
+}
+#links-list .link-item:hover {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+#links-list .link-item img {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  margin-right: 12px;
+  cursor: pointer;
+}
+
+#links-list .link-item .name {
+  flex: 1;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--color-text);
+  cursor: pointer;
+  word-break: break-all;
+}
+
+#links-list .link-item .actions {
+  display: flex;
+  gap: 4px;
+  margin-left: 12px;
+}
+
+#links-list .link-item .actions button {
+  background: none;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  color: var(--color-text);
+  transition: color 150ms ease, transform 100ms ease;
+}
+#links-list .link-item .actions button:hover {
+  color: var(--color-primary);
+}
+#links-list .link-item .actions button:active {
+  transform: scale(0.9);
+}
+
+
