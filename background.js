@@ -1,9 +1,9 @@
 // background.js
-console.log('Social Quick Links background worker started.');
+console.log('Q-Links v2.0 background worker started.');
 
-// Example placeholder for future Stripe/payment handling:
-// chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
-//   if (msg.type === 'PURCHASE') {
-//     // call Stripe API here...
-//   }
-// });
+// Placeholder for future payment/analytics integrations
+chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
+  if (msg.type === 'PURCHASE') {
+    // TODO: integrate Stripe or analytics here
+  }
+});

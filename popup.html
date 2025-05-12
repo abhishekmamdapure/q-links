@@ -3,52 +3,40 @@
 <head>
   <meta charset="UTF-8">
   <title>Q-Links</title>
-
-  <!-- Inter font -->
   <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
     rel="stylesheet"
   />
-
-  <!-- your styles -->
   <link rel="stylesheet" href="popup.css">
 </head>
 <body>
-  <div class="popup-container">
-    <!-- hidden form for add/edit -->
-    <div id="form-container" class="hidden">
-      <input
-        id="display-name"
-        type="text"
-        placeholder="Display Name"
-        class="input-text"
-      />
-      <input
-        id="profile-url"
-        type="url"
-        placeholder="Profile URL"
-        class="input-text"
-      />
+  <div class="popup-container _anim-fade-in">
+    <!-- Form Overlay -->
+    <div id="form-container" class="hidden _anim-slide-in">
+      <input id="display-name" class="input-text" placeholder="Display Name" />
+      <input id="profile-url"  class="input-text" placeholder="Profile URL" />
       <select id="icon-select" class="input-text"></select>
       <div class="form-actions">
-        <button id="save-btn" class="button-primary">✔ Save</button>
-        <button id="cancel-btn" class="button-secondary">✖ Cancel</button>
+        <button id="save-btn"   class="button-primary">Save</button>
+        <button id="cancel-btn" class="button-secondary">Cancel</button>
       </div>
     </div>
 
-    <!-- header with title + add button -->
+    <!-- Main Header -->
     <header class="header-bar">
       <h1 class="heading">Q-Links</h1>
       <button id="add-btn" class="button-primary">＋</button>
     </header>
 
-    <!-- where your links render -->
+    <!-- Link List -->
     <main class="content">
       <ul id="links-list"></ul>
     </main>
+
+    <!-- Snackbar for Copy Feedback -->
+    <div id="snackbar" class="snackbar">Copied!</div>
   </div>
 
-  <!-- your logic -->
   <script src="popup.js"></script>
 </body>
 </html>

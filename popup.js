@@ -1,139 +1,131 @@
-// popup.js
-
-// 1. Grab UI elements
-const addBtn = document.getElementById('add-btn');
-const formContainer = document.getElementById('form-container');
-const saveBtn = document.getElementById('save-btn');
-const cancelBtn = document.getElementById('cancel-btn');
-const displayNameInput = document.getElementById('display-name');
-const profileUrlInput = document.getElementById('profile-url');
+// 1. Elements
+const addBtn     = document.getElementById('add-btn');
+const formCt     = document.getElementById('form-container');
+const saveBtn    = document.getElementById('save-btn');
+const cancelBtn  = document.getElementById('cancel-btn');
+const nameInput  = document.getElementById('display-name');
+const urlInput   = document.getElementById('profile-url');
 const iconSelect = document.getElementById('icon-select');
-const linksList = document.getElementById('links-list');
+const linksList  = document.getElementById('links-list');
+const snackbar   = document.getElementById('snackbar');
 
-let links = [];
-let editIndex = null;
+let links = [], editIdx = null;
 
-// 2. Utility to load icons into the <select>
-const iconFiles = ['facebook.svg','x.svg','instagram.svg','linkedin.svg','youtube.svg','default.svg'];
-iconFiles.forEach(file => {
+// 2. Icon Library (add more SVGs into icons/ if needed)
+const iconFiles = [
+  'facebook.svg','x.svg','instagram.svg',
+  'linkedin.svg','youtube.svg','default.svg'
+];
+iconFiles.forEach(f => {
   const opt = document.createElement('option');
-  opt.value = file;
-  // give default.svg a friendly label
-  opt.text = file === 'default.svg' 
-    ? 'Other (default icon)' 
-    : file.replace('.svg','').charAt(0).toUpperCase() + file.replace('.svg','').slice(1);
-  iconSelect.appendChild(opt);
+  opt.value = f;
+  opt.text  = f === 'default.svg'
+    ? 'Other'
+    : f.replace('.svg','').charAt(0).toUpperCase() + f.slice(1,-4);
+  iconSelect.append(opt);
 });
 
-
-// 3. Show form
+// 3. Show Add Form
 addBtn.addEventListener('click', () => {
-  editIndex = null;
-  displayNameInput.value = '';
-  profileUrlInput.value = '';
-  iconSelect.value = 'default.svg';
-  formContainer.classList.remove('hidden');
+  editIdx = null;
+  nameInput.value = '';
+  urlInput.value  = '';
+  iconSelect.value= 'default.svg';
+  formCt.classList.remove('hidden');
 });
 
 // 4. Cancel
 cancelBtn.addEventListener('click', () => {
-  formContainer.classList.add('hidden');
+  formCt.classList.add('hidden');
 });
 
-// 5. Save (Add or Edit)
+// 5. Save (Add/Edit)
 saveBtn.addEventListener('click', () => {
-  const name = displayNameInput.value.trim();
-  const url  = profileUrlInput.value.trim();
+  const name = nameInput.value.trim();
+  const url  = urlInput.value.trim();
   const icon = iconSelect.value;
-
-  if (!name || !url) {
-    alert('Please fill in both fields.');
-    return;
-  }
+  if (!name || !url) return alert('Both fields are required.');
 
   const entry = { name, url, icon };
-  if (editIndex !== null) {
-    links[editIndex] = entry;
-  } else {
+  if (editIdx !== null) links[editIdx] = entry;
+  else {
     links.push(entry);
   }
-
   chrome.storage.sync.set({ links }, () => {
-    formContainer.classList.add('hidden');
+    formCt.classList.add('hidden');
     renderList();
   });
 });
 
-// 6. Load existing links from storage on popup open
+// 6. Load on Open
 chrome.storage.sync.get('links', data => {
   links = data.links || [];
   renderList();
 });
 
-// 7. Render list helper
+// 7. Render List
 function renderList() {
   linksList.innerHTML = '';
-  links.forEach((link, idx) => {
+  links.forEach((lnk, i) => {
     const li = document.createElement('li');
-    li.className = 'link-item';
+    li.className = 'link-item _anim-slide-in';
 
-    // Icon (click to copy)
+    // Icon
     const img = document.createElement('img');
-    img.src = `icons/${link.icon}`;
+    img.src = `icons/${lnk.icon}`;
     img.title = 'Copy URL';
-    img.addEventListener('click', () => copyToClipboard(link.url, img));
-    li.appendChild(img);
+    img.addEventListener('click', () => copyFeedback(lnk.url));
+    li.append(img);
 
-    // Name (also copy)
-    const nameSpan = document.createElement('span');
-    nameSpan.className = 'name';
-    nameSpan.textContent = link.name;
-    nameSpan.addEventListener('click', () => copyToClipboard(link.url, nameSpan));
-    li.appendChild(nameSpan);
+    // Name
+    const nameEl = document.createElement('span');
+    nameEl.className = 'name';
+    nameEl.textContent = lnk.name;
+    nameEl.addEventListener('click', () => copyFeedback(lnk.url));
+    li.append(nameEl);
 
-    // Edit / Delete controls
+    // Actions
     const actions = document.createElement('div');
     actions.className = 'actions';
 
     const editBtn = document.createElement('button');
     editBtn.textContent = '✎';
     editBtn.title = 'Edit';
-    editBtn.addEventListener('click', () => startEdit(idx));
-    actions.appendChild(editBtn);
+    editBtn.onclick = () => startEdit(i);
+    actions.append(editBtn);
 
     const delBtn = document.createElement('button');
     delBtn.textContent = '🗑';
     delBtn.title = 'Delete';
-    delBtn.addEventListener('click', () => deleteLink(idx));
-    actions.appendChild(delBtn);
+    delBtn.onclick = () => deleteLink(i);
+    actions.append(delBtn);
 
-    li.appendChild(actions);
-    linksList.appendChild(li);
+    li.append(actions);
+    linksList.append(li);
   });
 }
 
-// 8. Copy helper with feedback
-function copyToClipboard(text, anchorEl) {
+// 8. Copy + Snackbar Feedback
+function copyFeedback(text) {
   navigator.clipboard.writeText(text).then(() => {
-    const orig = anchorEl.textContent;
-    anchorEl.textContent = 'Copied!';
-    setTimeout(() => anchorEl.textContent = orig, 1000);
+    snackbar.classList.add('show');
+    setTimeout(() => snackbar.classList.remove('show'), 1200);
   });
 }
 
-// 9. Edit flow
-function startEdit(idx) {
-  editIndex = idx;
-  const { name, url, icon } = links[idx];
-  displayNameInput.value = name;
-  profileUrlInput.value = url;
-  iconSelect.value = icon;
-  formContainer.classList.remove('hidden');
+// 9. Edit
+function startEdit(i) {
+  editIdx = i;
+  const { name, url, icon } = links[i];
+  nameInput.value = name;
+  urlInput.value  = url;
+  iconSelect.value= icon;
+  formCt.classList.remove('hidden');
 }
 
-// 10. Delete flow
-function deleteLink(idx) {
+// 10. Delete
+function deleteLink(i) {
   if (!confirm('Delete this link?')) return;
-  links.splice(idx, 1);
+  links.splice(i,1);
   chrome.storage.sync.set({ links }, renderList);
 }
