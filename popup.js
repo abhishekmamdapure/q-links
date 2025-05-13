@@ -88,17 +88,42 @@ function renderList() {
     const actions = document.createElement('div');
     actions.className = 'actions';
 
+
+    const copyBtn = document.createElement('button');
+    copyBtn.title = 'Copy URL';
+    copyBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" height="16" viewBox="0 0 24 24" width="16" fill="currentColor">
+    <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+    </svg>`;
+    copyBtn.onclick = () => copyFeedback(lnk.url);
+    actions.append(copyBtn);
+
+    const openBtn = document.createElement('button');
+    openBtn.title = 'Open in new tab';
+    openBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" height="16" viewBox="0 0 24 24" width="16" fill="currentColor">
+    <path d="M14 3v2h3.59L10 12.59 11.41 14 19 6.41V10h2V3h-7z"/><path d="M5 5h4V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-4h-2v4H5V5z"/>
+    </svg>`;
+    openBtn.onclick = () => {
+    const absoluteUrl = lnk.url.startsWith('http') ? lnk.url : `https://${lnk.url}`;
+    window.open(absoluteUrl, '_blank');
+    };
+    actions.append(openBtn);
+
     const editBtn = document.createElement('button');
-    editBtn.textContent = '✎';
     editBtn.title = 'Edit';
+    editBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" height="16" viewBox="0 0 24 24" width="16" fill="currentColor">
+    <path d="M3 17.25V21h3.75l11.07-11.07-3.75-3.75L3 17.25zM20.71 7.04a1.003 1.003 0 000-1.42l-2.34-2.34a1.003 1.003 0 00-1.42 0l-1.83 1.83 3.75 3.75 1.84-1.82z"/>
+    </svg>`;
     editBtn.onclick = () => startEdit(i);
     actions.append(editBtn);
 
     const delBtn = document.createElement('button');
-    delBtn.textContent = '🗑';
     delBtn.title = 'Delete';
+    delBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" height="16" viewBox="0 0 24 24" width="16" fill="currentColor">
+    <path d="M16 9v10H8V9h8m-1.5-6h-5l-1 1H5v2h14V4h-4.5l-1-1z"/>
+    </svg>`;
     delBtn.onclick = () => deleteLink(i);
     actions.append(delBtn);
+
 
     li.append(actions);
     linksList.append(li);
